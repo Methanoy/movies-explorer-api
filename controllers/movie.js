@@ -1,4 +1,7 @@
 const Movie = require('../models/movie');
+const NotFoundError = require('../errors/NotFoundError');
+const BadRequestError = require('../errors/BadRequestError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 const getAllMovies = (req, res, next) => {
   Movie
@@ -21,6 +24,7 @@ const createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
+
   Movie
     .create({
       country,
