@@ -7,6 +7,7 @@ const auth = require('./middlewares/auth');
 const createUser = require('./controllers/user');
 const login = require('./controllers/user');
 const cors = require('./middlewares/cors');
+const errorHandler = require('./middlewares/errorHandler');
 
 const { PORT = 3000 } = process.env;
 
@@ -20,6 +21,8 @@ app.post('/signup', createUser);
 app.post('/signin', login);
 app.use('/user', auth, userRouter);
 app.use('/movies', auth, moviesRouter);
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
