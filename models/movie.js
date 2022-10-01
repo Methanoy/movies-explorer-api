@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -24,17 +25,17 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: [true, 'Поле "Ссылка на постер" является обязательным для заполнения'],
-    // validation: [URL],
+    validation: [validator.isURL, 'Поле "Постер" должно содержать корректный URL'],
   },
   trailerLink: {
     type: String,
     required: [true, 'Поле "Ссылка на трейлер" является обязательным для заполнения'],
-    // validation: [URL],
+    validation: [validator.isURL, 'Поле "Постер" должно содержать корректный URL'],
   },
   thumbnail: {
     type: String,
     required: [true, 'Поле "Миниатюрный постер" является обязательным для заполнения'],
-    // validation: [URL],
+    validation: [validator.isURL, 'Поле "Постер" должно содержать корректный URL'],
   },
   owner: {
     type: [mongoose.ObjectId],

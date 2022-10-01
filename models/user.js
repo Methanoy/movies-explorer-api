@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const validator = require('validator');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const userSchema = new mongoose.Schema({
@@ -18,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "Почта" является обязательным для заполнения'],
     unique: [true, 'Пользователь с аналогичным email уже зарегистрирован'],
-    // validate: [validator.isEmail, 'Поле "Почта" должно содержать email'],
+    validate: [validator.isEmail, 'Поле "Почта" должно содержать email'],
   },
 });
 
