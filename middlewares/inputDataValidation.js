@@ -13,7 +13,7 @@ const validateUrl = (value) => {
 
 const validateId = celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().hex().length(24).alphanum(),
+    id: Joi.string().hex().length(24).alphanum(),
   }),
 });
 
@@ -45,14 +45,15 @@ const validateUpdateUserProfile = celebrate({
 
 const validateCreateMovie = celebrate({
   body: Joi.object().keys({
-    director: Joi.string().required().min(2).max(30),
     country: Joi.string().required(),
+    director: Joi.string().required().min(2).max(30),
     duration: Joi.number().required(),
     year: Joi.string().required().min(4).max(4),
     description: Joi.string().required(),
     image: Joi.string().required().custom(validateUrl),
     trailerLink: Joi.string().required().custom(validateUrl),
     thumbnail: Joi.string().required().custom(validateUrl),
+    movieId: Joi.string().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),

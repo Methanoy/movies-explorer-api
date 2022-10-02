@@ -38,9 +38,9 @@ const movieSchema = new mongoose.Schema({
     validation: [validator.isURL, 'Поле "Постер" должно содержать корректный URL'],
   },
   owner: {
-    type: [mongoose.ObjectId],
+    type: mongoose.ObjectId,
     ref: 'user',
-    required: [true, 'Поле "Миниатюрный постер" является обязательным для заполнения'],
+    required: true,
   },
   movieId: {
     type: String,
@@ -53,6 +53,10 @@ const movieSchema = new mongoose.Schema({
   nameEN: {
     type: String,
     required: [true, 'Поле "Название фильма(EN)" является обязательным для заполнения'],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

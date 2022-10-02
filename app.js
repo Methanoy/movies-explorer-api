@@ -16,8 +16,9 @@ const cors = require('./middlewares/cors');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { validateLogin, validateCreateUser } = require('./middlewares/inputDataValidation');
 /* контроллеры */
-const { createUser, login, logout } = require('./controllers/user');
+const { createUser, login } = require('./controllers/user');
 
 const { PORT = 3000 } = process.env;
 
@@ -37,9 +38,9 @@ app.use(express.json());
 app.use(requestLogger);
 app.use(cors);
 
-app.post('/signup', createUser);
-app.post('/signin', login);
-app.get('/signout', auth, logout);
+app.post('/signup', validateCreateUser, createUser);
+app.post('/signin', validateLogin, login);
+// app.get('/signout', auth, logout);
 
 app.use('/user', auth, userRouter);
 app.use('/movies', auth, moviesRouter);
