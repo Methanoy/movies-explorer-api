@@ -5,6 +5,9 @@ const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 const { NOT_FND_USER_MESSG, CNFL_ERR_USER_MESSG, BAD_REQ_USER_MESSG } = require('../utils/errorConstants');
+const {
+  OK, CREATED, AUTRZD_USER_MESSG, LOGOUT_USER_MESSG,
+} = require('../utils/successResConstants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -17,7 +20,7 @@ const createUser = (req, res, next) => {
       .create({
         name, password: hash, email,
       }))
-    .then((user) => res.status(201).send(
+    .then((user) => res.status(CREATED).send(
       {
         data: {
           name: user.name,
@@ -52,7 +55,7 @@ const login = (req, res, next) => {
         secure: NODE_ENV === 'production',
         httpOnly: true,
       })
-        .send({ message: 'Вы успешно авторизовались.' });
+        .send({ message: AUTRZD_USER_MESSG });
     })
     .catch(next);
 };
@@ -64,7 +67,7 @@ const logout = (req, res, next) => {
       if (!user) {
         throw new NotFoundError(NOT_FND_USER_MESSG);
       } else {
-        res.clearCookie('jwt').send({ message: 'Вы успешно завершили сеанс.' });
+        res.clearCookie('jwt').send({ message: LOGOUT_USER_MESSG });
       }
     })
     .catch(next);
@@ -77,7 +80,7 @@ const getCurrentUserData = (req, res, next) => {
       if (!user) {
         throw new NotFoundError(NOT_FND_USER_MESSG);
       } else {
-        res.status(200).send(user);
+        res.status(OK).send(user);
       }
     })
     .catch(next);
@@ -93,7 +96,7 @@ const updateUserProfile = (req, res, next) => {
       if (!userData) {
         throw new NotFoundError(NOT_FND_USER_MESSG);
       } else {
-        res.status(200).send(userData);
+        res.status(OK).send(userData);
       }
     })
     .catch((err) => {

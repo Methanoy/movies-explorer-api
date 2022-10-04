@@ -5,11 +5,12 @@ const ForbiddenError = require('../errors/ForbiddenError');
 const {
   BAD_REQ_CRT_MESSG, NOT_FND_DEL_MESSG, FRBDN_ERR_DEL_MESSG, BAD_REQ_DEL_MESSG,
 } = require('../utils/errorConstants');
+const { OK, CREATED } = require('../utils/successResConstants');
 
 const createMovie = (req, res, next) => {
   Movie
     .create({ ...req.body, owner: req.user._id })
-    .then((movie) => res.status(201).send(movie))
+    .then((movie) => res.status(CREATED).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(BAD_REQ_CRT_MESSG));
@@ -22,7 +23,7 @@ const createMovie = (req, res, next) => {
 const getAllMovies = (req, res, next) => {
   Movie
     .find({ owner: req.user._id })
-    .then((movies) => res.status(200).send(movies))
+    .then((movies) => res.status(OK).send(movies))
     .catch(next);
 };
 
