@@ -37,7 +37,8 @@ const deleteMovie = (req, res, next) => {
           .findByIdAndRemove(id)
           .then((movieToDelete) => {
             res.send({ movieToDelete });
-          });
+          })
+          .catch(next);
       }
     })
     .catch((err) => {
