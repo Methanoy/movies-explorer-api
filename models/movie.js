@@ -43,7 +43,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   movieId: {
-    type: String,
+    type: Number,
     required: [true, 'Поле "ID фильма" является обязательным для заполнения'],
   },
   nameRU: {
@@ -53,10 +53,6 @@ const movieSchema = new mongoose.Schema({
   nameEN: {
     type: String,
     required: [true, 'Поле "Название фильма(EN)" является обязательным для заполнения'],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
   },
 });
 
