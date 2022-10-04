@@ -1,4 +1,4 @@
-const { SERV_ERR_CODE } = require('../utils/errorConstants');
+const { SERV_ERR_CODE, SERV_ERR_HNDLR_MESSG } = require('../utils/errorConstants');
 
 module.exports = (err, req, res, next) => {
   const { statusCode = SERV_ERR_CODE, message } = err;
@@ -7,7 +7,7 @@ module.exports = (err, req, res, next) => {
     .status(statusCode)
     .send({
       message: statusCode === SERV_ERR_CODE
-        ? 'Упс, на сервере произошла ошибка. Простите :('
+        ? SERV_ERR_HNDLR_MESSG
         : message,
     });
 

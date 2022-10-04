@@ -9,6 +9,7 @@ const { validateLogin, validateCreateUser } = require('../middlewares/inputDataV
 const { createUser, login, logout } = require('../controllers/user');
 /* ошибки */
 const NotFoundError = require('../errors/NotFoundError');
+const { NOT_FND_ROUTE_MESSG } = require('../utils/errorConstants');
 
 router.post('/signup', validateCreateUser, createUser);
 router.post('/signin', validateLogin, login);
@@ -17,7 +18,7 @@ router.get('/signout', auth, logout);
 router.use('/users', auth, userRouter);
 router.use('/movies', auth, moviesRouter);
 router.use(auth, () => {
-  throw new NotFoundError('Указан неправильный путь.');
+  throw new NotFoundError(NOT_FND_ROUTE_MESSG);
 });
 
 module.exports = router;

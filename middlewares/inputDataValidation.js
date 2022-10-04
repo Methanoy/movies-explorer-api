@@ -1,10 +1,11 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 const BadRequestError = require('../errors/BadRequestError');
+const { BAD_REQ_URL_MESSG } = require('../utils/errorConstants');
 
 const validateUrl = (value) => {
   if (!validator.isURL(value)) {
-    throw new BadRequestError('Передан некорректный адрес URL');
+    throw new BadRequestError(BAD_REQ_URL_MESSG);
   }
   return value;
 };

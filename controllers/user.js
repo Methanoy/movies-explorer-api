@@ -4,6 +4,7 @@ const User = require('../models/user');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
+const { NOT_FND_USER_MESSG, CNFL_ERR_USER_MESSG, BAD_REQ_USER_MESSG } = require('../utils/errorConstants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -26,9 +27,9 @@ const createUser = (req, res, next) => {
     ))
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с аналогичным email уже зарегистрирован.'));
+        next(new ConflictError(CNFL_ERR_USER_MESSG));
       } else if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
+        next(new BadRequestError(BAD_REQ_USER_MESSG));
       } else {
         next(err);
       }
@@ -61,7 +62,7 @@ const logout = (req, res, next) => {
     .findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь по указанному _id не найден.');
+        throw new NotFoundError(NOT_FND_USER_MESSG);
       } else {
         res.clearCookie('jwt').send({ message: 'Вы успешно завершили сеанс.' });
       }
@@ -74,7 +75,7 @@ const getCurrentUserData = (req, res, next) => {
     .findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь по указанному _id не найден.');
+        throw new NotFoundError(NOT_FND_USER_MESSG);
       } else {
         res.status(200).send(user);
       }
@@ -90,16 +91,16 @@ const updateUserProfile = (req, res, next) => {
     })
     .then((userData) => {
       if (!userData) {
-        throw new NotFoundError('Пользователь с указанным _id не найден.');
+        throw new NotFoundError(NOT_FND_USER_MESSG);
       } else {
         res.status(200).send(userData);
       }
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с аналогичным email уже зарегистрирован.'));
+        next(new ConflictError(CNFL_ERR_USER_MESSG));
       } else if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлени профиля пользователя.'));
+        next(new BadRequestError(BAD_REQ_USER_MESSG));
       } else {
         next(err);
       }

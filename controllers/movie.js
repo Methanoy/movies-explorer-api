@@ -2,6 +2,9 @@ const Movie = require('../models/movie');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
 const ForbiddenError = require('../errors/ForbiddenError');
+const {
+  BAD_REQ_CRT_MESSG, NOT_FND_DEL_MESSG, FRBDN_ERR_DEL_MESSG, BAD_REQ_DEL_MESSG,
+} = require('../utils/errorConstants');
 
 const createMovie = (req, res, next) => {
   Movie
@@ -9,7 +12,7 @@ const createMovie = (req, res, next) => {
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании карточки фильма.'));
+        next(new BadRequestError(BAD_REQ_CRT_MESSG));
       } else {
         next(err);
       }
@@ -29,9 +32,9 @@ const deleteMovie = (req, res, next) => {
     .findById(id)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Карточка фильма с указанным _id не найдена.');
+        throw new NotFoundError(NOT_FND_DEL_MESSG);
       } else if (movie.owner.toString() !== req.user._id) {
-        throw new ForbiddenError('Вы не можете удалить чужую карточку фильма.');
+        throw new ForbiddenError(FRBDN_ERR_DEL_MESSG);
       } else {
         Movie
           .findByIdAndRemove(id)
@@ -43,7 +46,7 @@ const deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при удалении карточки фильма.'));
+        next(new BadRequestError(BAD_REQ_DEL_MESSG));
       } else {
         next(err);
       }
