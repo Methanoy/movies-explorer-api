@@ -5,6 +5,7 @@ const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 const { NOT_FND_USER_MESSG, CNFL_ERR_USER_MESSG, BAD_REQ_USER_MESSG } = require('../utils/errorConstants');
+const { DEV_SECRET } = require('../utils/constants');
 const {
   OK, CREATED, AUTRZD_USER_MESSG, LOGOUT_USER_MESSG,
 } = require('../utils/successResConstants');
@@ -46,7 +47,7 @@ const login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : DEV_SECRET,
         { expiresIn: '7d' },
       );
 
