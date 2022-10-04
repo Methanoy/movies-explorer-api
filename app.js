@@ -42,7 +42,7 @@ app.post('/signup', validateCreateUser, createUser);
 app.post('/signin', validateLogin, login);
 app.get('/signout', auth, logout);
 
-app.use('/user', auth, userRouter);
+app.use('/users', auth, userRouter);
 app.use('/movies', auth, moviesRouter);
 app.use(auth, () => {
   throw new NotFoundError('Указан неправильный путь.');
