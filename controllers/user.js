@@ -96,7 +96,9 @@ const updateUserProfile = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.code === 11000) {
+        next(new ConflictError('Пользователь с аналогичным email уже зарегистрирован.'));
+      } else if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные при обновлени профиля пользователя.'));
       } else {
         next(err);
